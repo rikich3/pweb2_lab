@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mi Agenda</title>
+</head>
+<body>
+<h1>Mi agenda</h1>
+
+
+<button id="getEventsButton">
+    <img src="https://localhost/sideeye.png">
+</button>
+<button id="createEvent">
+    <img src="https://localhost/sideeye.png">
+</button>
+<button id="deleteEvent">
+    <img src="https://localhost/sideeye.png">
+</button>
+
+<script>
+document.getElementById('getEventsButton').addEventListener('click', function() {
+  fetch('/show', {
+    method: 'GET'
+  })
+  .then(response => response.json())
+  .then(data => {
+    // Open a new browser window or tab with the events page and pass the data
+    const eventsPageUrl = '/eventList.html';
+    const eventsData = encodeURIComponent(JSON.stringify(data));
+    window.open(`${eventsPageUrl}?events=${eventsData}`, '_blank');
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    alert('An error occurred. Please try again later.');
+  });
+});
+document.getElementById('createEvent').addEventListener('click', function() {
+    fetch('/show', {
+      method: 'POST'
+    })
+    .then(response => response.json())
+    .then(data => {
+      // Open a new browser window or tab with the events page and pass the data
+      const eventsPageUrl = '/eventList.html';
+      const eventsData = encodeURIComponent(JSON.stringify(data));
+      window.open(`${eventsPageUrl}?events=${eventsData}`, '_blank');
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert('An error occurred. Please try again later.');
+    });
+  });
+  document.getElementById('deleteEvent').addEventListener('click', function() {
+    fetch('/show', {
+      method: 'DELETE'
+    })
+    .then(response => response.json())
+    .then(data => {
+      // Open a new browser window or tab with the events page and pass the data
+      const eventsPageUrl = '/eventList.html';
+      const eventsData = encodeURIComponent(JSON.stringify(data));
+      window.open(`${eventsPageUrl}?events=${eventsData}`, '_blank');
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert('An error occurred. Please try again later.');
+    });
+  });
+</script>
+
+</body>
+</html>
