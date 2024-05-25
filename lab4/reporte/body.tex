@@ -1,0 +1,96 @@
+\section{Ejercicios propuestos}
+
+\begin{itemize}
+    \item Cree una aplicación NodeJS con express, para administrar una agenda personal.
+    \item Home (“/”) : Página Principal
+    \item Trabaje todo en una misma interfaz.
+    \item Ejemplo de estructura de la agenda cuando se explora “Eventos”
+\end{itemize}
+
+	
+	\subsection*{Cree una aplicación NodeJS con express, para administrar una agenda personal.}
+	En mi caso, el trabajo final de programacion web 1, fue realizado con el servidor NGINX, que similiar a Apache, despliega contenido estatico y puede ejecutar
+	CGIS. Este software lo instalo en mi imagen a travez de el archivo de DockerFile
+
+	\begin{lstlisting}
+		RUN apt-get update
+		RUN apt-get install -y nginx
+		RUN apt-get install -y fcgiwrap
+	\end{lstlisting}
+	
+	\subsection{Instale cualquiera de estos lenguajes de programación: PHP, Perl, Python.\newline Configure el servidor web para que interprete uno de los lenguajes de programación.}
+	De la misma forma, para el lenguaje de programacion que utilizamos fue Perl, y en el dockerfile en el que estoy mi contenedor saca la imagen se encuentra las instrucciones para la 
+	instalacion de estas dependencias
+	
+	\begin{lstlisting}
+		RUN apt-get install -y perl
+		RUN apt-get install -y cpanminus
+		# Lets make this inside the container
+		# RUN cpan CGI
+		# RUN cpan DBI
+		# RUN cpan JSON
+		# RUN cpan CGI::Session
+	\end{lstlisting}
+
+	Como se puede ver eh comentado la instalacion de los modulos de Perl que utilizamos para realizar la pagina web.
+
+	\subsection{Instale cualquiera de los servidores de base de datos: MySQL, MariaDB, PostgreSQL.\newline
+	Instale el servidor Open SSH Server. Envíe archivos al servidor: imágenes, css, js, etc.\newline}
+
+	En el dockerfile tambien se instala la base de datos MariaDB.
+
+	\begin{lstlisting}
+		RUN apt-get install -y mariadb-server
+	\end{lstlisting}
+
+	\subsection{Cree un usuario pweb2 con contraseña: 12345678. \newline
+	Otorgue permisos al usuario para acceder a la aplicación web. (Read/Write) \newline}
+
+	Esta operacion se realizo a travez del terminal del container una vez creado la imagen y corriendo,
+	En resumen el dockerfile que utilizo para crear la imagen se ve tal que asi:
+
+	\includegraphics[scale=0.4]{./img/lab1_1.png}
+	
+	Una vez adentro del terminal del contenedor puedo comenzar los procesos de MariaDB asi como el servicio de fcgiwrap
+	el cual me permite ejecutar cgi en servidores estaticos administrados por nginx.\newline \newline
+
+	\begin{lstlisting}[style=mybash]
+		docker run -dp 8000:80 nginxserver
+		docker exec -it mystifying_ellis /bin/bash
+		root@1a30749290f4:/var/www/grupopiensa.com/proyecto-final-pweb1# /etc/init.d/mariadb start
+		 * Starting MariaDB database server mariadbd                                                                                                                                         [ OK ] 
+		root@1a30749290f4:/var/www/grupopiensa.com/proyecto-final-pweb1# /etc/init.d/fcgiwrap start
+		 * Starting FastCGI wrapper fcgiwrap                                                                                                                                                 [ OK ] 
+		root@1a30749290f4:/var/www/grupopiensa.com/proyecto-final-pweb1# mysql
+		Welcome to the MariaDB monitor.  Commands end with ; or \g.
+		Your MariaDB connection id is 33
+		Server version: 10.6.16-MariaDB-0ubuntu0.22.04.1 Ubuntu 22.04
+
+		Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+		Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+		MariaDB [(none)]> create database pweb1
+		    -> ;
+		Query OK, 1 row affected (0.001 sec)		
+		MariaDB [(none)]> GRANT ALL PRIVILEGES ON pweb1.* TO 'alumno'@'%' IDENTIFIED BY 'pweb1';
+		Query OK, 0 rows affected (0.015 sec)
+
+		MariaDB [(none)]> exit
+		Bye
+
+	\end{lstlisting}
+
+	\subsection{Finalmente implemente el trabajo final del curso de pw1 en ese contenedor. \newline
+	Elabore un informe paso a paso para donde explique funcionalmente el proyecto demostrando  que se trata de un contenedor docker.\newline
+	Adjunte la URL de un video donde muestre que se trata de un contenedor Docker. \newline}
+
+	Entonces para probar mi contenedor de docker que este correctamente sirviendo los servidores de nginx voy a entrar al buscador de firefox 
+	y buscar la pagina web grupopiensa, el cual esta mapeado al localhost 127.0.0.1 en el puerto 8000, el cual tiene un port forwarding
+	al puerto 80 del contenedor
+
+	\includegraphics[scale = 0.3]{./img/lab1_2.png}
+	\newline
+	Aqui dejo el enlace al video de YT en el que se muestra la veracidad del uso de Docker para hostear paginas web: https://youtu.be/ERklT6IMV7E
+
+\pagebreak

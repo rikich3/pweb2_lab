@@ -3,9 +3,9 @@ const path = require('path');
 const cors = require('cors');
 const fs = require('fs');
 const app = express();
-app.use(cors);
 app.use(express.static('pub'));
-app.listen(8080, ()=> {
+app.use(cors);
+app.listen(8000, ()=> {
     console.log("Escuchando en el puerto 8080")
 })
 app.get('/', (request, response)=>{
@@ -14,16 +14,17 @@ app.get('/', (request, response)=>{
 // API para mostrar los eventos
 app.get('/show', async (request, response)=>{
     const events = await getEvents();
-    res.json(events);
+    response.json(events);
 
 });
 
 app.post('/', async (request, response)=>{
     //aqui coloco el codigo para crear el directorio con la fecha y el evento con la hora
-    const { date, hour, text } = req.body;
+    console.log('hasta aqui todo bem');
+    const { date, hour, text } = request.body;
 
   if (!date || !hour || !text) {
-    return res.status(400).json({ error: 'Missing date, hour, or text' });
+    return response.status(400).json({ error: 'Missing date, hour, or text' });
   }
   const firstLine = text.split('\n')[0];
   const dirPath = path.join(__dirname, 'Eventos', date);
@@ -31,36 +32,41 @@ app.post('/', async (request, response)=>{
 
   try {
     // Create the directory if it doesn't exist
+    console.log(`Creating directory: ${dirPath}`);
     await fs.promises.mkdir(dirPath, { recursive: true });
+    console.log(`Directory created: ${dirPath}`);
+
 
     // Write the event text to the file
+    console.log(`Writing file: ${filePath}`);
     await fs.promises.writeFile(filePath, text);
+    console.log(`File written: ${filePath}`);
 
-    res.status(201).json({ message: 'Event created successfully', title: date, res: firstLine});
+    response.status(201).json({ message: 'Event created successfully: ' + "\n" + firstLine});
   } catch (err) {
     console.error('Error creating event:', err);
-    res.status(500).json({ error: 'Failed to create event' });
+    response.status(500).json({ error: 'Failed to create event' });
   }
 
 });
 app.delete('/', async (request, response)=>{
-    const { date, hour } = req.body;
+    const { date, hour } = request.body;
 
   if (!date || !hour) {
-    return res.status(400).json({ error: 'Missing date or hour' });
+    return response.status(400).json({ error: 'Missing date or hour' });
   }
 
   const filePath = path.join(__dirname, 'Eventos', date, `${hour}.txt`);
 
   try {
     await fs.promises.unlink(filePath);
-    res.status(200).json({ message: 'Event deleted successfully' });
+    response.status(200).json({ message: 'Event deleted successfully' });
   } catch (err) {
     if (err.code === 'ENOENT') {
-      res.status(404).json({ error: 'Event not found' });
+      response.status(404).json({ error: 'Event not found' });
     } else {
       console.error('Error deleting event:', err);
-      res.status(500).json({ error: 'Failed to delete event' });
+      response.status(500).json({ error: 'Failed to delete event' });
     }
   }
 
