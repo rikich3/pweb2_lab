@@ -1,5 +1,4 @@
-%\packagelist
-\documentclass[10pt]{article}
+
 \usepackage[top=3cm, bottom=3cm, outer=3cm, inner=3cm]{geometry}
 \usepackage{multicol}
 \usepackage{graphicx}
@@ -93,6 +92,21 @@
 \definecolor{codebackgroundBash}{rgb}{0.95, 0.95, 0.92}
 \definecolor{tablebackground}{rgb}{0.8, 0, 0}
 
+\lstdefinelanguage{JavaScript}{
+  morekeywords=[1]{break, continue, delete, else, for, function, if, in,
+    new, return, this, typeof, var, void, while, with},
+  % Literals, primitive types, and reference types.
+  morekeywords=[2]{false, null, true, boolean, number, undefined,
+    Array, Boolean, Date, Math, Number, String, Object},
+  % Built-ins.
+  morekeywords=[3]{eval, parseInt, parseFloat, escape, unescape},
+  sensitive,
+  morecomment=[s]{/*}{*/},
+  morecomment=[l]//,
+  morecomment=[s]{/**}{*/}, % JavaDoc style comments
+  morestring=[b]',
+  morestring=[b]"
+}[keywords, comments, strings]
 
 \lstdefinestyle{java}{frame=tb,
 	language=Java,
@@ -113,7 +127,21 @@
 	showtabs=false,
 	showlines=false,
 }
-
+\lstdefinestyle{js}{frame=tb,
+  language=JavaScript,
+  backgroundcolor=\color{white},
+  basicstyle=\footnotesize\ttfamily,
+  keywordstyle=\color{blue},
+  commentstyle=\color{green!50!black},
+  stringstyle=\color{orange},
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=4,
+  captionpos=b,
+  showstringspaces=false
+}
 \lstdefinestyle{mybash}{frame=tb,
 	language=bash,
 	showstringspaces=false,

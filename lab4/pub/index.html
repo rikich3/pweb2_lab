@@ -12,10 +12,12 @@
 <div id="maincontainer">
   <div id="uppercontainer">
     <div id="logDisplay">
-      <p id= "history1" style="flex: 1;"></p>
-      <p id= "history2" style="flex: 1;"></p>
+      <label style="flex: 1">Ultimas 2 operaciones realizadas</label>
+      <p id= "history1" style="flex: 3;"></p>
+      <p id= "history2" style="flex: 3;"></p>
     </div>
     <form id="createEventForm">
+      <label>Crea un evento!</label><br>
       <label for="date">Date (YYYY-MM-DD):</label><br>
       <input type="date" id="date" name="date" required><br><br>
     
@@ -28,6 +30,7 @@
       <input type="text" id="desc" name="field2"><br><br>
     </form>
     <form id="deleteForm">
+      <label>Elimina un evento</label><br>
       <label for="date">Date (YYYY-MM-DD):</label><br>
       <input type="date" id="deletedate" name="deletedate" required><br><br>
     
