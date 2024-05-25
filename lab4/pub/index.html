@@ -3,22 +3,43 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://localhost/style.css">
 <title>Mi Agenda</title>
 </head>
 <body>
 <h1>Mi agenda</h1>
 
-
-<button id="getEventsButton">
-    <img src="https://localhost/sideeye.png">
-</button>
-<button id="createEvent">
-    <img src="https://localhost/sideeye.png">
-</button>
-<button id="deleteEvent">
-    <img src="https://localhost/sideeye.png">
-</button>
-
+<div id="maincontainer">
+  <div id="uppercontainer">
+    <div id="logDisplay">
+      <p id= "history1" style="flex: 1;"></p>
+      <p id= "history2" style="flex: 1;"></p>
+    </div>
+    <form id="createEventForm">
+      <label for="date">Date (YYYY-MM-DD):</label><br>
+      <input type="date" id="date" name="date" required><br><br>
+    
+      <label for="hour">Hour (HH:MM):</label><br>
+      <input type="time" id="hour" name="hour" required><br><br>
+    
+      <label for="text">Event Text:</label><br>
+      <textarea id="text" name="text" required></textarea><br><br>
+    
+      <button type="submit">Create Event</button>
+    </form>
+  </div>
+  <div id= 'actionsDisplay'>
+    <button id="getEventsButton">
+      <img src="https://localhost/sideeye.png" style="height: 30%; width: auto">
+    </button>
+    <button id="createEvent">
+      <img src="https://localhost/createicon.png" style="height: 30%; width: auto">
+    </button>
+    <button id="deleteEvent">
+      <img src="https://localhost/deleteicon.png" style="height: 30%; width: auto">
+    </button>
+  </div>
+</div>
 <script>
 document.getElementById('getEventsButton').addEventListener('click', function() {
   fetch('/show', {
@@ -37,7 +58,7 @@ document.getElementById('getEventsButton').addEventListener('click', function() 
   });
 });
 document.getElementById('createEvent').addEventListener('click', function() {
-    fetch('/show', {
+    fetch('/', {
       method: 'POST'
     })
     .then(response => response.json())
@@ -53,21 +74,19 @@ document.getElementById('createEvent').addEventListener('click', function() {
     });
   });
   document.getElementById('deleteEvent').addEventListener('click', function() {
-    fetch('/show', {
+    fetch('/delete', {
       method: 'DELETE'
     })
     .then(response => response.json())
     .then(data => {
-      // Open a new browser window or tab with the events page and pass the data
-      const eventsPageUrl = '/eventList.html';
-      const eventsData = encodeURIComponent(JSON.stringify(data));
-      window.open(`${eventsPageUrl}?events=${eventsData}`, '_blank');
+      alert(data.message);
     })
     .catch(error => {
       console.error('Error:', error);
       alert('An error occurred. Please try again later.');
     });
   });
+
 </script>
 
 </body>

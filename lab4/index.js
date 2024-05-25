@@ -25,7 +25,7 @@ app.post('/', async (request, response)=>{
   if (!date || !hour || !text) {
     return res.status(400).json({ error: 'Missing date, hour, or text' });
   }
-
+  const firstLine = text.split('\n')[0];
   const dirPath = path.join(__dirname, 'Eventos', date);
   const filePath = path.join(dirPath, `${hour}.txt`);
 
@@ -36,7 +36,7 @@ app.post('/', async (request, response)=>{
     // Write the event text to the file
     await fs.promises.writeFile(filePath, text);
 
-    res.status(201).json({ message: 'Event created successfully' });
+    res.status(201).json({ message: 'Event created successfully', title: date, res: firstLine});
   } catch (err) {
     console.error('Error creating event:', err);
     res.status(500).json({ error: 'Failed to create event' });
